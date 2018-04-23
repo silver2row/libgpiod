@@ -8,6 +8,7 @@ gpioget
 gpioset
 gpiomon
 gpiofind
+gpio-dbus
 gpiod_cxx_tests
 gpiodetectcxx
 gpiofindcxx
@@ -42,3 +43,6 @@ stamp-h1
 
 # unit tests
 gpiod-test
+
+# generated files
+generated-*

@@ -1,0 +1,19 @@
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+
+<!-- This file is part of libgpiod.
+
+     Copyright (C) 2018 Bartosz Golaszewski <bartekgola@gmail.com> -->
+
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+  <interface name='org.gpiod.Chip'>
+    <property name='Name' type='s' access='read' />
+    <property name='Label' type='s' access='read' />
+    <property name='NumLines' type='u' access='read' />
+  </interface>
+  <interface name='org.gpiod.Line'>
+    <property name='Offset' type='u' access='read' />
+  </interface>
+</node>"

@@ -13,3 +13,9 @@ if WITH_TOOLS
 SUBDIRS += tools
 
 endif
+
+if WITH_DBUS
+
+SUBDIRS += dbus
+
+endif

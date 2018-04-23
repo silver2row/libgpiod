@@ -112,6 +112,37 @@ then
 	AC_CHECK_HEADERS([sys/signalfd.h], [], [HEADER_NOT_FOUND_TOOLS([sys/signalfd.h])])
 fi
 
+AC_ARG_ENABLE([dbus],
+	[AC_HELP_STRING([--enable-dbus],
+		[build the dbus daemon [default=no]])],
+	[
+		if test "x$enableval" == xyes
+		then
+			with_dbus=true
+		else
+			with_dbus=false
+		fi
+	],
+	[with_dbus=false])
+AM_CONDITIONAL([WITH_DBUS], [test "x$with_dbus" = xtrue])
+
+AC_DEFUN([FUNC_NOT_FOUND_GLIB],
+	[ERR_NOT_FOUND([$1()], [dbus daemon])])
+
+if test "x$with_dbus" = xtrue
+then
+	AC_CHECK_FUNC([daemon], [], [FUNC_NOT_FOUND_GLIB([daemon])])
+	PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.50])
+	PKG_CHECK_MODULES([GIO], [gio-2.0 >= 2.50])
+	PKG_CHECK_MODULES([GIO_UNIX], [gio-unix-2.0 >= 2.50])
+	PKG_CHECK_MODULES([GUDEV], [gudev-1.0 >= 230])
+	AC_CHECK_PROG([has_gdbus_codegen], [gdbus-codegen], [true], [false])
+	if test "x$has_gdbus_codegen" = xfalse
+	then
+		AC_MSG_ERROR([gdbus-codegen not found - needed to build dbus daemon])
+	fi
+fi
+
 AC_ARG_ENABLE([tests],
 	[AC_HELP_STRING([--enable-tests],
 		[enable libgpiod tests [default=no]])],
@@ -196,6 +227,9 @@ AC_CONFIG_FILES([libgpiod.pc
 		 src/Makefile
 		 src/lib/Makefile
 		 src/tools/Makefile
+		 src/dbus/Makefile
+		 src/dbus/data/Makefile
+		 src/dbus/examples/Makefile
 		 tests/Makefile
 		 bindings/cxx/libgpiodcxx.pc
 		 bindings/Makefile
